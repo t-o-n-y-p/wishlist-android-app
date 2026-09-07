@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="BottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:background">?attr/tintColor</item>
+    </style>
+    <style name="TopAppBarLayout" parent="Widget.Material3.AppBarLayout">
+        <item name="android:background">?attr/tintColor</item>
+    </style>
+    <style name="TopAppBar" parent="Widget.Material3.Toolbar">
+        <item name="titleTextColor">?attr/contentColor</item>
+        <item name="titleTextAppearance">@style/TextAppearance.TopAppBar</item>
+        <item name="buttonGravity">center_vertical</item>
+        <item name="popupTheme">@style/TopAppBar.OverflowMenu</item>
+    </style>
+    <style name="TopAppBar.OverflowButton">
+        <item name="android:src">@drawable/more_vert_fill0_wght400_grad0_opsz24</item>
+    </style>
+    <style name="TopAppBar.OverflowMenu" parent="ThemeOverlay.Material3">
+        <item name="android:backgroundTint">?attr/mainColor</item>
+        <item name="textAppearanceSmallPopupMenu">@style/TopAppBar.OverflowMenu.Text</item>
+        <item name="textAppearanceLargePopupMenu">@style/TopAppBar.OverflowMenu.Text</item>
+    </style>
+    <style name="TopAppBar.OverflowMenu.Text" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+    <style name="BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">?attr/tintColor</item>
+        <item name="itemTextColor">?attr/contentColor</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigationView</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigationView</item>
+        <item name="itemIconTint">?attr/contentColor</item>
+        <item name="itemIconSize">32dp</item>
+        <item name="itemActiveIndicatorStyle">@style/BottomNavigationView.ActiveIndicator</item>
+    </style>
+    <style name="TextAppearance.BottomNavigationView" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+    <style name="BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">?attr/indicationColor</item>
+    </style>
+
+    <style name="SearchView" parent="Widget.Material3.SearchView">
+        <item name="backgroundTint">?attr/tintColor</item>
+        <item name="android:textAppearance">@style/TextAppearance.SearchView</item>
+    </style>
+    <style name="TextAppearance.SearchView" parent="TextAppearance.Material3.SearchView">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="TextAppearance.TopAppBar" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="TextAppearance.WordList" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="TextAppearance.WordList.Definition" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.Title" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/contentColor</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="TextAppearance.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/contentColor</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.ModalTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="TextAppearance.ModalTitle.Alert" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="TextAppearance.ModalBody" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Button" parent="Widget.Material3.Button">
+        <item name="android:textColor">?attr/mainColor</item>
+        <item name="android:textAppearance">@style/TextAppearance.Button.Modal</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="backgroundTint">@color/button_color</item>
+    </style>
+    <style name="IconButton" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="strokeColor">?attr/contentColor</item>
+        <item name="iconTint">?attr/contentColor</item>
+    </style>
+    <style name="FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Medium">
+        <item name="backgroundTint">?attr/tintColor</item>
+        <item name="tint">?attr/contentColor</item>
+        <item name="rippleColor">?attr/contentColor</item>
+    </style>
+    <style name="IconButton.Danger" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="strokeColor">?attr/dangerColor</item>
+        <item name="iconTint">?attr/dangerColor</item>
+    </style>
+    <style name="Button.Danger" parent="Button">
+        <item name="backgroundTint">?attr/dangerColor</item>
+    </style>
+    <style name="Button.Inverted.Tint" parent="Button">
+        <item name="android:textColor">?attr/contentColor</item>
+        <item name="backgroundTint">?attr/mainColor</item>
+    </style>
+    <style name="Button.Inverted.Tint.BottomSheetDialog" parent="Button">
+        <item name="android:textColor">?attr/contentColor</item>
+        <item name="backgroundTint">?attr/tintColor</item>
+    </style>
+    <style name="TextAppearance.Button.Modal" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="CircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator">
+        <item name="indicatorColor">?attr/contentColor</item>
+    </style>
+
+    <style name="TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearance">@style/TextInputShape</item>
+        <item name="android:textColorHint">?attr/contentColor</item>
+        <item name="hintTextColor">?attr/contentColor</item>
+        <item name="boxStrokeColor">@color/text_input_outline_color</item>
+        <item name="boxStrokeErrorColor">?attr/dangerColor</item>
+        <item name="hintTextAppearance">@style/TextAppearance.Hint</item>
+        <item name="cursorColor">?attr/contentColor</item>
+        <item name="counterTextColor">?attr/contentColor</item>
+        <item name="counterTextAppearance">@style/TextAppearance.Hint</item>
+        <item name="errorTextColor">?attr/dangerColor</item>
+        <item name="errorTextAppearance">@style/TextAppearance.Hint</item>
+        <item name="errorIconTint">?attr/dangerColor</item>
+    </style>
+
+    <style name="TextInputShape" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+    <style name="TextAppearance.Hint" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextInputEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:textAppearance">@style/TextAppearance.EditText</item>
+        <item name="android:textColor">?attr/contentColor</item>
+    </style>
+    <style name="TextAppearance.EditText" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">?attr/contentColor</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Alert" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/tintColor</item>
+        <item name="android:textColor">?attr/contentColor</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TextAppearance.ModalTitle.Alert</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.ModalBody</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Alert.Button</item>
+    </style>
+    <style name="Alert.Button" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">?attr/contentColor</item>
+        <item name="android:textAppearance">@style/TextAppearance.Button.Modal</item>
+    </style>
+
+    <style name="Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/switch_thumb_color</item>
+        <item name="trackTint">?attr/tintColor</item>
+        <item name="trackDecorationTint">@color/switch_thumb_color</item>
+        <item name="thumbIcon">@drawable/thumb_icon</item>
+        <item name="thumbIconSize">24dp</item>
+        <item name="thumbIconTint">?attr/mainColor</item>
+    </style>
+
+</resources>

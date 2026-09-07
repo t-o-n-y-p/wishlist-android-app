@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/users_tab_navigation"
+    app:startDestination="@id/users_fragment">
+
+    <fragment
+        android:id="@+id/users_fragment"
+        android:name="ru.otus.wishlist.fragment.users.UsersFragment"
+        android:label="fragment_users"
+        tools:layout="@layout/fragment_users">
+        <action
+            android:id="@+id/go_to_wishlists"
+            app:destination="@+id/wishlists_fragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/wishlists_fragment"
+        android:name="ru.otus.wishlist.fragment.wishlists.WishlistsFragment"
+        android:label="fragment_wishlists"
+        tools:layout="@layout/fragment_wishlists">
+        <action
+            android:id="@+id/go_to_gifts"
+            app:destination="@+id/gifts_fragment"/>
+        <action
+            android:id="@+id/go_to_users"
+            app:destination="@+id/users_fragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/gifts_fragment"
+        android:name="ru.otus.wishlist.fragment.gifts.GiftsFragment"
+        android:label="fragment_gifts"
+        tools:layout="@layout/fragment_gifts">
+        <action
+            android:id="@+id/go_to_wishlists"
+            app:destination="@+id/wishlists_fragment"/>
+    </fragment>
+</navigation>

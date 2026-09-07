@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/filter"
+        app:showAsAction="always"
+        android:icon="@drawable/filter_alt_512dp_1f1f1f_fill0_wght400_grad200_opsz48"
+        android:title="@string/filter"/>
+</menu>

@@ -1,0 +1,453 @@
+---
+openapi: 3.0.1
+info:
+  title: Wishlist API
+  description: API для управления списками желаний
+  version: '1.0'
+tags:
+- name: Подарки
+  description: API для работы с подарками
+- name: Списки желаний
+  description: API для работы со списками желаний
+- name: Аутентификация
+  description: API для регистрации и авторизации пользователей
+paths:
+  "/api/wishlists/{id}":
+    get:
+      tags:
+      - Списки желаний
+      summary: Получение списка желаний по id
+      operationId: getWishlist
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Wishlist"
+    put:
+      tags:
+      - Списки желаний
+      summary: Обновление списка желаний
+      operationId: updateWishlist
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/WishlistDto"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Wishlist"
+    delete:
+      tags:
+      - Списки желаний
+      summary: Удаление списка желаний
+      operationId: deleteWishlist
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: object
+  "/api/gifts/{id}":
+    get:
+      tags:
+      - Подарки
+      summary: Получение подарка по id
+      operationId: getGift
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Gift"
+    put:
+      tags:
+      - Подарки
+      summary: Обновление подарка
+      operationId: updateGift
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/GiftDto"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Gift"
+    delete:
+      tags:
+      - Подарки
+      summary: Удаление подарка
+      operationId: deleteGift
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: object
+  "/api/gifts/{id}/reserve":
+    put:
+      tags:
+      - Подарки
+      summary: Переключение статуса зарезервированности подарка
+      operationId: toggleReserved
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Gift"
+  "/api/wishlists":
+    get:
+      tags:
+      - Списки желаний
+      summary: Получение всех списков желаний текущего пользователя
+      operationId: getCurrentUserWishlists
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Wishlist"
+    post:
+      tags:
+      - Списки желаний
+      summary: Создание нового списка желаний
+      operationId: createWishlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/WishlistDto"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Wishlist"
+  "/api/gifts/wishlist/{wishListId}":
+    get:
+      tags:
+      - Подарки
+      summary: Получение всех подарков в списке желаний
+      operationId: getAllGiftsInWishlist
+      parameters:
+      - name: wishListId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Gift"
+    post:
+      tags:
+      - Подарки
+      summary: Создание нового подарка
+      operationId: createGift
+      parameters:
+      - name: wishListId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/GiftDto"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Gift"
+  "/api/auth/register":
+    post:
+      tags:
+      - Аутентификация
+      summary: Регистрация нового пользователя
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserRegistrationDto"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: object
+  "/api/auth/login":
+    post:
+      tags:
+      - Аутентификация
+      summary: Авторизация пользователя
+      operationId: authenticateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LoginDto"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Login"
+  "/api/wishlists/user/{userId}":
+    get:
+      tags:
+      - Списки желаний
+      summary: Получение всех списков желаний пользователя по его ID
+      operationId: getUserWishlists
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Wishlist"
+  "/api/users":
+    get:
+      tags:
+        - user-controller
+      operationId: getAllUsersOpen
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/User"
+  "/api/users/{userId}/wishlists":
+    get:
+      tags:
+        - user-controller
+      operationId: getUserWishlistsOpen
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Wishlist"
+
+components:
+  schemas:
+    WishlistDto:
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+    Gift:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        storeUrl:
+          type: string
+        price:
+          type: number
+        reserved:
+          type: boolean
+        wishList:
+          "$ref": "#/components/schemas/Wishlist"
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+    Wishlist:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        owner:
+          "$ref": "#/components/schemas/User"
+        gifts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Gift"
+    GiftDto:
+      required:
+      - name
+      - price
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          maxLength: 255
+          minLength: 0
+          type: string
+        description:
+          maxLength: 1000
+          minLength: 0
+          type: string
+        imageUrl:
+          type: string
+        price:
+          type: number
+        storeUrl:
+          pattern: "^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?$"
+          type: string
+        reserved:
+          type: boolean
+    UserRegistrationDto:
+      required:
+      - email
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          maxLength: 50
+          minLength: 3
+          type: string
+        email:
+          type: string
+        password:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+    LoginDto:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Login:
+      type: object
+      properties:
+        token:
+          type: string

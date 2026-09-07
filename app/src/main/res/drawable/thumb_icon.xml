@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/close_small_512dp_1f1f1f_fill0_wght700_grad200_opsz48" android:state_checked="false"/>
+    <item android:drawable="@drawable/check_small_512dp_1f1f1f_fill0_wght700_grad200_opsz48"/>
+</selector>

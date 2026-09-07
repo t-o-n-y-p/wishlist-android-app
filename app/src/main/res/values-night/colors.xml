@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main">#121212</color>
+    <color name="grey_primary">#E0E0E0</color>
+    <color name="grey_secondary">#424242</color>
+    <color name="grey_background">#272727</color>
+    <color name="danger">#FFFF00</color>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mine_menu"
+        android:enabled="true"
+        android:icon="@drawable/list_alt_512dp_1f1f1f_fill0_wght400_grad0_opsz48"
+        android:title="@string/mine"/>
+    <item
+        android:id="@+id/users_menu"
+        android:enabled="true"
+        android:icon="@drawable/article_person_512dp_1f1f1f_fill0_wght400_grad0_opsz48"
+        android:title="@string/users"/>
+    <item
+        android:id="@+id/profile_menu"
+        android:enabled="true"
+        android:icon="@drawable/person_fill0_wght400_grad0_opsz48"
+        android:title="@string/profile"/>
+</menu>

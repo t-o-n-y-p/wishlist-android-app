@@ -1,0 +1,15 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.Wishlist" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="contentColor">@color/grey_primary</item>
+        <item name="indicationColor">@color/grey_secondary</item>
+        <item name="tintColor">@color/grey_background</item>
+        <item name="mainColor">@color/main</item>
+        <item name="dangerColor">@color/danger</item>
+
+        <item name="android:statusBarColor">@color/grey_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="actionOverflowButtonStyle">@style/TopAppBar.OverflowButton</item>
+        <item name="android:windowSplashScreenBackground">@color/grey_background</item>
+    </style>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_register"
+    app:startDestination="@+id/login_fragment">
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="ru.otus.wishlist.fragment.login.LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/go_to_register"
+            app:destination="@+id/register_fragment"/>
+        <action
+            android:id="@+id/go_to_app_main"
+            app:destination="@+id/app_main_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/register_fragment"
+        android:name="ru.otus.wishlist.fragment.register.RegisterFragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/go_to_login"
+            app:destination="@+id/login_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/app_main_fragment"
+        android:name="ru.otus.wishlist.fragment.main.AppMainFragment"
+        android:label="AppMainFragment"
+        tools:layout="@layout/fragment_app_main">
+        <action
+            android:id="@+id/logout"
+            app:destination="@+id/login_fragment"/>
+    </fragment>
+
+
+</navigation>
