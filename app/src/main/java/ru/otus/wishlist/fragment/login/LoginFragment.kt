@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -62,5 +65,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
         binding.versionValue.text = BuildConfig.VERSION_NAME
         viewModel.setSessionId(binding)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.sessionIdValue) { v, insets ->
+            val systemBar = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBar.bottom)
+            insets
+        }
     }
 }
