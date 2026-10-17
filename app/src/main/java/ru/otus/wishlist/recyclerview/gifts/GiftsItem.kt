@@ -10,7 +10,7 @@ data class GiftsItem(
     var price: Int = 0,
     var reserved: Boolean = false,
     private val mOperationState: MutableLiveData<OperationState> =
-        MutableLiveData(OperationState.NotSet)
+        MutableLiveData(OperationState.NotSet),
 ) {
 
     val operationState: LiveData<OperationState>
@@ -32,16 +32,15 @@ data class GiftsItem(
         mOperationState.value = OperationState.Error
     }
 
-    fun isOperationStateError() =
-        mOperationState.value == OperationState.Error
+    fun isOperationStateError() = mOperationState.value == OperationState.Error
 
     sealed class OperationState {
 
-        data object NotSet: OperationState()
+        data object NotSet : OperationState()
 
-        data object Loading: OperationState()
+        data object Loading : OperationState()
 
-        data object Success: OperationState()
+        data object Success : OperationState()
 
         data object Error : OperationState()
     }

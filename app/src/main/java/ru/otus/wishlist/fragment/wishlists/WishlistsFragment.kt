@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.min
 import ru.otus.wishlist.R
 import ru.otus.wishlist.databinding.FragmentWishlistsBinding
 import ru.otus.wishlist.fragment.FRAGMENT_WISHLISTS_CREATE
@@ -24,62 +24,65 @@ import ru.otus.wishlist.fragment.showErrorAlert
 import ru.otus.wishlist.fragment.wishlists.edit.WishlistsEditFragment
 import ru.otus.wishlist.recyclerview.wishlists.WishlistsItem
 import ru.otus.wishlist.recyclerview.wishlists.WishlistsItemAdapter
-import kotlin.math.min
 
 @AndroidEntryPoint
 class WishlistsFragment : Fragment(R.layout.fragment_wishlists) {
 
     private lateinit var binding: FragmentWishlistsBinding
     private val viewModel: WishlistsFragmentViewModel by viewModels()
-    private val adapter: WishlistsItemAdapter = WishlistsItemAdapter(
-        onItemClicked = { item, position ->
-            viewModel.saveCurrentWishlist(item, position)
-            findNavController().navigate(R.id.go_to_gifts)
-        },
-        onEditButtonClicked = { item, position ->
-            viewModel.saveCurrentWishlist(item, position)
-            item.clearDeleteState()
-            WishlistsEditFragment().show(
-                parentFragmentManager,
-                WishlistsEditFragment::class.simpleName)
-        },
-        onDeleteButtonClicked = { item ->
-            requireActivity().showConfirmationAlert { _, _ ->
-                viewModel.deleteWishlistItem(item)
-            }
-        },
-        onBind = { item, actionGroup, loadingGroup ->
-            item.deleteState.observe(viewLifecycleOwner) {
-                when (it) {
-                    WishlistsItem.DeleteState.NotSet -> {
-                        actionGroup.isVisible = viewModel.getCurrentUser() == null
-                        loadingGroup.isVisible = false
-                    }
-                    WishlistsItem.DeleteState.Loading -> {
-                        actionGroup.isVisible = false
-                        loadingGroup.isVisible = true
-                    }
-                    WishlistsItem.DeleteState.Success -> {
-                        Toast.makeText(
-                            context,
-                            R.string.wishlists_deleted,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    WishlistsItem.DeleteState.Error -> {
-                        actionGroup.isVisible = true
-                        loadingGroup.isVisible = false
-                        requireContext().showErrorAlert()
+    private val adapter: WishlistsItemAdapter =
+        WishlistsItemAdapter(
+            onItemClicked = { item, position ->
+                viewModel.saveCurrentWishlist(item, position)
+                findNavController().navigate(R.id.go_to_gifts)
+            },
+            onEditButtonClicked = { item, position ->
+                viewModel.saveCurrentWishlist(item, position)
+                item.clearDeleteState()
+                WishlistsEditFragment()
+                    .show(
+                        parentFragmentManager,
+                        WishlistsEditFragment::class.simpleName,
+                    )
+            },
+            onDeleteButtonClicked = { item ->
+                requireActivity().showConfirmationAlert { _, _ ->
+                    viewModel.deleteWishlistItem(item)
+                }
+            },
+            onBind = { item, actionGroup, loadingGroup ->
+                item.deleteState.observe(viewLifecycleOwner) {
+                    when (it) {
+                        WishlistsItem.DeleteState.NotSet -> {
+                            actionGroup.isVisible = viewModel.getCurrentUser() == null
+                            loadingGroup.isVisible = false
+                        }
+                        WishlistsItem.DeleteState.Loading -> {
+                            actionGroup.isVisible = false
+                            loadingGroup.isVisible = true
+                        }
+                        WishlistsItem.DeleteState.Success -> {
+                            Toast.makeText(
+                                    context,
+                                    R.string.wishlists_deleted,
+                                    Toast.LENGTH_SHORT,
+                                )
+                                .show()
+                        }
+                        WishlistsItem.DeleteState.Error -> {
+                            actionGroup.isVisible = true
+                            loadingGroup.isVisible = false
+                            requireContext().showErrorAlert()
+                        }
                     }
                 }
-            }
-        }
-    )
+            },
+        )
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentWishlistsBinding.inflate(inflater)
         return binding.root
@@ -91,11 +94,15 @@ class WishlistsFragment : Fragment(R.layout.fragment_wishlists) {
             adapter = this@WishlistsFragment.adapter
             addOnScrollListener(
                 viewModel.getOnScrollListener(
-                    this@WishlistsFragment.adapter, RECYCLER_VIEW_PAGE_SIZE))
+                    this@WishlistsFragment.adapter,
+                    RECYCLER_VIEW_PAGE_SIZE,
+                )
+            )
         }
         setFragmentResultListener(FRAGMENT_WISHLISTS_EDIT) { _, bundle ->
             when (bundle.getString(RESULT)) {
-                SUCCESS -> adapter.notifyItemChanged(viewModel.getCurrentWishlistPosition())
+                SUCCESS ->
+                    adapter.notifyItemChanged(viewModel.getCurrentWishlistPosition())
             }
         }
         setFragmentResultListener(FRAGMENT_WISHLISTS_CREATE) { _, bundle ->
@@ -142,21 +149,17 @@ class WishlistsFragment : Fragment(R.layout.fragment_wishlists) {
         }
         binding.addButton.setOnClickListener {
             viewModel.clearCurrentWishlist()
-            WishlistsEditFragment().show(
-                parentFragmentManager,
-                WishlistsEditFragment::class.simpleName)
+            WishlistsEditFragment()
+                .show(
+                    parentFragmentManager,
+                    WishlistsEditFragment::class.simpleName,
+                )
         }
-        viewModel.getCurrentUser()
-            ?.apply {
-                binding.addButton.isVisible = false
-                binding.topAppBar.title = getString(R.string.wishlists_of_user).format(username)
-                requireActivity().onBackPressedDispatcher.addCallback(this@WishlistsFragment) {
-                    findNavController().navigate(R.id.go_to_users)
-                }
-            }
-            ?: let {
-                binding.topAppBar.title = getString(R.string.mine)
-            }
+        viewModel.getCurrentUser()?.apply {
+            binding.addButton.isVisible = false
+            binding.topAppBar.title =
+                getString(R.string.wishlists_of_user).format(username)
+        } ?: let { binding.topAppBar.title = getString(R.string.mine) }
         viewModel.fillWishlistsFromCache()
     }
 }

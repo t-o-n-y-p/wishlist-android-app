@@ -10,6 +10,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.min
 import ru.otus.wishlist.R
 import ru.otus.wishlist.databinding.FragmentUsersBinding
 import ru.otus.wishlist.fragment.FRAGMENT_USERS_FILTER
@@ -18,24 +19,24 @@ import ru.otus.wishlist.fragment.RESULT
 import ru.otus.wishlist.fragment.SUCCESS
 import ru.otus.wishlist.fragment.users.filter.UsersFilterFragment
 import ru.otus.wishlist.recyclerview.users.UsersItemAdapter
-import kotlin.math.min
 
 @AndroidEntryPoint
 class UsersFragment : Fragment(R.layout.fragment_users) {
 
     private lateinit var binding: FragmentUsersBinding
     private val viewModel: UsersFragmentViewModel by viewModels()
-    private val adapter: UsersItemAdapter = UsersItemAdapter(
-        onItemClicked = { item ->
-            viewModel.saveCurrentUser(item)
-            findNavController().navigate(R.id.go_to_wishlists)
-        }
-    )
+    private val adapter: UsersItemAdapter =
+        UsersItemAdapter(
+            onItemClicked = { item ->
+                viewModel.saveCurrentUser(item)
+                findNavController().navigate(R.id.go_to_wishlists)
+            }
+        )
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentUsersBinding.inflate(inflater)
         return binding.root
@@ -47,7 +48,10 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
             adapter = this@UsersFragment.adapter
             addOnScrollListener(
                 viewModel.getOnScrollListener(
-                    this@UsersFragment.adapter, RECYCLER_VIEW_PAGE_SIZE))
+                    this@UsersFragment.adapter,
+                    RECYCLER_VIEW_PAGE_SIZE,
+                )
+            )
         }
         setFragmentResultListener(FRAGMENT_USERS_FILTER) { _, bundle ->
             when (bundle.getString(RESULT)) {
@@ -96,10 +100,11 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
         binding.topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.filter -> {
-                    UsersFilterFragment().show(
-                        parentFragmentManager,
-                        UsersFilterFragment::class.simpleName
-                    )
+                    UsersFilterFragment()
+                        .show(
+                            parentFragmentManager,
+                            UsersFilterFragment::class.simpleName,
+                        )
                     true
                 }
                 else -> false

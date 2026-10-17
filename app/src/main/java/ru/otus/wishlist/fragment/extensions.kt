@@ -19,7 +19,7 @@ fun BottomSheetDialogFragment.dismissWithToast(resId: Int) {
 fun Fragment.setFragmentResult(fragment: String, key: String, value: String) =
     setFragmentResult(
         fragment,
-        Bundle().apply { putString(key, value) }
+        Bundle().apply { putString(key, value) },
     )
 
 fun Context.showErrorAlert(): AlertDialog =

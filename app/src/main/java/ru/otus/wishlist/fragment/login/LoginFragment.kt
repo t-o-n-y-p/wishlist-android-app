@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.otus.wishlist.BuildConfig
 import ru.otus.wishlist.R
 import ru.otus.wishlist.databinding.FragmentLoginBinding
 import ru.otus.wishlist.fragment.showErrorAlert
@@ -21,8 +21,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val viewModel: LoginFragmentViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentLoginBinding.inflate(inflater)
         return binding.root
@@ -56,10 +57,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.logInButton.setOnClickListener {
             viewModel.login(
                 username = binding.usernameTextInput.text.toString(),
-                password = binding.passwordTextInput.text.toString()
+                password = binding.passwordTextInput.text.toString(),
             )
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this) {}
+        binding.versionValue.text = BuildConfig.VERSION_NAME
         viewModel.setSessionId(binding)
     }
 }

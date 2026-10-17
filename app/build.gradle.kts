@@ -1,24 +1,21 @@
-import com.android.build.api.dsl.ApplicationExtension
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.secrets)
+    alias(libs.plugins.ktfmt)
 }
 
-extensions.configure<ApplicationExtension> {
+android {
     namespace = "ru.otus.wishlist"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk { version = release(37) }
     defaultConfig {
         applicationId = "ru.otus.wishlist"
-        minSdk = 31
+        minSdk = 27
         targetSdk = 37
-        versionCode = 11
-        versionName = "1.1"
+        versionCode = 102
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,7 +24,7 @@ extensions.configure<ApplicationExtension> {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -54,11 +51,18 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.uuid)
     implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.serialization.converter)
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlin.reflect)
     implementation(libs.recyclerview)
+    implementation(libs.splashscreen)
     implementation(project(":wishlist-api"))
+}
+
+ktfmt {
+    kotlinLangStyle()
+    maxWidth = 90
 }

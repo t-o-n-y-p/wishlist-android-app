@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wishlist_item"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/edit_button"
+        app:layout_constraintEnd_toStartOf="@+id/action_container"
         tools:text="@tools:sample/lorem[5]"
         android:maxLines="1"
         android:ellipsize="end"
@@ -26,8 +26,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/edit_button"
+        app:layout_constraintEnd_toStartOf="@+id/action_container"
         app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="@tools:sample/lorem[12]"
         android:minLines="2"
         android:maxLines="2"
@@ -35,46 +36,56 @@
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"/>
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/action_group"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/action_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="edit_button,delete_button"/>
-
-    <Button
-        style="@style/IconButton"
-        android:id="@+id/edit_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/edit_512dp_1f1f1f_fill0_wght400_grad0_opsz48"
-        app:layout_constraintEnd_toStartOf="@+id/delete_button"
-        app:layout_constraintTop_toTopOf="@+id/title"
-        app:layout_constraintBottom_toBottomOf="@+id/description"/>
-
-    <Button
-        style="@style/IconButton.Danger"
-        android:id="@+id/delete_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/delete_512dp_1f1f1f_fill0_wght400_grad0_opsz48"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/title"
-        app:layout_constraintBottom_toBottomOf="@+id/description"/>
+        app:layout_constraintBottom_toBottomOf="@+id/description">
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/loading_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="loading"/>
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/action_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="edit_button,delete_button"/>
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        style="@style/CircularProgressIndicator"
-        android:id="@+id/loading"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/title"
-        app:layout_constraintBottom_toBottomOf="@+id/description" />
+        <Button
+            style="@style/IconButton"
+            android:id="@+id/edit_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/edit_512dp_1f1f1f_fill0_wght400_grad0_opsz48"
+            app:layout_constraintEnd_toStartOf="@+id/delete_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <Button
+            style="@style/IconButton.Danger"
+            android:id="@+id/delete_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/delete_512dp_1f1f1f_fill0_wght400_grad0_opsz48"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/loading_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="loading"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            style="@style/CircularProgressIndicator"
+            android:id="@+id/loading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

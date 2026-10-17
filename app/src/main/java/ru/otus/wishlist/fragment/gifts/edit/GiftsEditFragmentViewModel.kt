@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import ru.otus.wishlist.DtoMapper
 import ru.otus.wishlist.R
@@ -13,17 +14,17 @@ import ru.otus.wishlist.api.models.Gift
 import ru.otus.wishlist.databinding.FragmentGiftsEditBinding
 import ru.otus.wishlist.fragment.FRAGMENT_GIFTS_CREATE
 import ru.otus.wishlist.fragment.FRAGMENT_GIFTS_EDIT
-import javax.inject.Inject
 
 @HiltViewModel
-class GiftsEditFragmentViewModel @Inject constructor(
+class GiftsEditFragmentViewModel
+@Inject
+constructor(
     private val useCase: GiftsEditFragmentUseCase,
     private val cache: WizardCache,
-    private val mapper: DtoMapper
+    private val mapper: DtoMapper,
 ) : ViewModel() {
 
-    private val mOperationState =
-        MutableLiveData<OperationState>(OperationState.NotSet)
+    private val mOperationState = MutableLiveData<OperationState>(OperationState.NotSet)
     val operationState: LiveData<OperationState>
         get() = mOperationState
 
@@ -40,29 +41,34 @@ class GiftsEditFragmentViewModel @Inject constructor(
             try {
                 cache.currentGift?.apply {
                     mOperationState.value = OperationState.Loading
-                    useCase.updateGift(
-                        id = id,
-                        name = name,
-                        description = description,
-                        price = price
-                    ).getOrThrow()
+                    useCase
+                        .updateGift(
+                            id = id,
+                            name = name,
+                            description = description,
+                            price = price,
+                        )
+                        .getOrThrow()
                     this.name = name
                     this.description = description
                     this.price = price
                     mOperationState.value = OperationState.Success
-                } ?: let {
-                    mOperationState.value = OperationState.Loading
-                    val createResponse: Gift =
-                        useCase.createGift(
-                            wishlistId = cache.currentWishlist?.id.orEmpty(),
-                            name = name,
-                            description = description,
-                            price = price
-                        ).getOrThrow()
-                    val newGift = mapper.mapToGiftsItem(createResponse)
-                    cache.currentWishlist?.gifts?.add(newGift)
-                    mOperationState.value = OperationState.Success
                 }
+                    ?: let {
+                        mOperationState.value = OperationState.Loading
+                        val createResponse: Gift =
+                            useCase
+                                .createGift(
+                                    wishlistId = cache.currentWishlist?.id.orEmpty(),
+                                    name = name,
+                                    description = description,
+                                    price = price,
+                                )
+                                .getOrThrow()
+                        val newGift = mapper.mapToGiftsItem(createResponse)
+                        cache.currentWishlist?.gifts?.add(newGift)
+                        mOperationState.value = OperationState.Success
+                    }
             } catch (_: Throwable) {
                 mOperationState.value = OperationState.Error
             }
@@ -76,11 +82,11 @@ class GiftsEditFragmentViewModel @Inject constructor(
 
     sealed class OperationState {
 
-        data object NotSet: OperationState()
+        data object NotSet : OperationState()
 
-        data object Loading: OperationState()
+        data object Loading : OperationState()
 
-        data object Success: OperationState()
+        data object Success : OperationState()
 
         data object Error : OperationState()
     }

@@ -10,17 +10,18 @@ class WishlistsItemAdapter(
     private val onItemClicked: (WishlistsItem, Int) -> Unit,
     private val onEditButtonClicked: (WishlistsItem, Int) -> Unit,
     private val onDeleteButtonClicked: (WishlistsItem) -> Unit,
-    private val onBind: (WishlistsItem, Group, Group) -> Unit
+    private val onBind: (WishlistsItem, Group, Group) -> Unit,
 ) : ListAdapter<WishlistsItem, WishlistsItemViewHolder>(WishlistsItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         WishlistsItemViewHolder(
-            view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_wishlists_info, parent, false),
+            view =
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.fragment_wishlists_info, parent, false),
             onItemClicked = onItemClicked,
             onEditButtonClicked = onEditButtonClicked,
             onDeleteButtonClicked = onDeleteButtonClicked,
-            onBind = onBind
+            onBind = onBind,
         )
 
     override fun onBindViewHolder(holder: WishlistsItemViewHolder, position: Int) =

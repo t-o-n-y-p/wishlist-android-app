@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlin.math.min
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.otus.wishlist.DtoMapper
@@ -18,20 +20,21 @@ import ru.otus.wishlist.recyclerview.users.UsersItem
 import ru.otus.wishlist.recyclerview.users.UsersItemAdapter
 import ru.otus.wishlist.storage.UserPreferences
 import ru.otus.wishlist.storage.get
-import javax.inject.Inject
-import kotlin.math.min
 
 @HiltViewModel
-class UsersFragmentViewModel @Inject constructor(
+class UsersFragmentViewModel
+@Inject
+constructor(
     private val sharedPreferences: SharedPreferences,
     private val useCase: UsersFragmentUseCase,
     private val cache: WizardCache,
-    private val mapper: DtoMapper
+    private val mapper: DtoMapper,
 ) : ViewModel() {
 
     private val mDataState = MutableLiveData<DataState>(DataState.NotSet)
     val dataState: LiveData<DataState>
         get() = mDataState
+
     private val mContentState = MutableLiveData<List<UsersItem>>()
     val contentState: LiveData<List<UsersItem>>
         get() = mContentState
@@ -40,21 +43,19 @@ class UsersFragmentViewModel @Inject constructor(
 
     fun fillUsersFromCache(binding: FragmentUsersBinding) {
         binding.clearFilterButton.isVisible = cache.usernameFilter.isNotBlank()
-        cache.users
-            .takeIf { it.isEmpty() }
-            ?.let { loadUsersAndSaveToCache() }
+        cache.users.takeIf { it.isEmpty() }?.let { loadUsersAndSaveToCache() }
             ?: let {
                 mDataState.value = DataState.Loading
                 cache.filteredUsers =
                     cache.users.filter { user ->
                         cache.usernameFilter
                             .takeIf { it.isNotEmpty() }
-                            ?.let { it == user.username }
-                            ?: true
+                            ?.let { it == user.username } ?: true
                     }
                 mContentState.value = cache.filteredUsers
                 mDataState.value =
-                    if (cache.filteredUsers.isEmpty()) DataState.Empty else DataState.Content
+                    if (cache.filteredUsers.isEmpty()) DataState.Empty
+                    else DataState.Content
             }
     }
 
@@ -64,16 +65,18 @@ class UsersFragmentViewModel @Inject constructor(
             try {
                 mDataState.value = DataState.Loading
                 val data = useCase.getAllUsers().getOrThrow()
-                data.takeIf { it.isNotEmpty() }
+                data
+                    .takeIf { it.isNotEmpty() }
                     ?.let {
-                        cache.users = mapper.mapToUsersItem(it) { user ->
-                            user.username != sharedPreferences.get<UserPreferences>().username
-                        }
+                        cache.users =
+                            mapper.mapToUsersItem(it) { user ->
+                                user.username !=
+                                    sharedPreferences.get<UserPreferences>().username
+                            }
                         cache.filteredUsers = cache.users
                         mContentState.value = cache.filteredUsers
                         mDataState.value = DataState.Content
-                    }
-                    ?: let { mDataState.value = DataState.Empty }
+                    } ?: let { mDataState.value = DataState.Empty }
             } catch (_: Throwable) {
                 mDataState.value = DataState.Error
             }
@@ -86,14 +89,19 @@ class UsersFragmentViewModel @Inject constructor(
                 super.onScrolled(recyclerView, dx, dy)
                 (recyclerView.layoutManager as? LinearLayoutManager)?.apply {
                     findLastVisibleItemPosition()
-                        .takeIf { it == itemCount - 1 && itemCount < cache.filteredUsers.size }
+                        .takeIf {
+                            it == itemCount - 1 && itemCount < cache.filteredUsers.size
+                        }
                         ?.let {
                             adapter.submitList(
                                 cache.filteredUsers.slice(
-                                    0
-                                            until
-                                            min(cache.filteredUsers.size, itemCount + pageSize)
-                                ))
+                                    0 until
+                                        min(
+                                            cache.filteredUsers.size,
+                                            itemCount + pageSize,
+                                        )
+                                )
+                            )
                         }
                 }
             }
@@ -112,13 +120,13 @@ class UsersFragmentViewModel @Inject constructor(
 
     sealed class DataState {
 
-        data object NotSet: DataState()
+        data object NotSet : DataState()
 
-        data object Loading: DataState()
+        data object Loading : DataState()
 
-        data object Empty: DataState()
+        data object Empty : DataState()
 
-        data object Content: DataState()
+        data object Content : DataState()
 
         data object Error : DataState()
     }

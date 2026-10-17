@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/gift_item"
@@ -14,11 +14,25 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/price"
+        app:layout_constraintEnd_toStartOf="@+id/action_container"
         tools:text="@tools:sample/lorem[5]"
         android:maxLines="1"
         android:ellipsize="end"
         android:layout_marginEnd="8dp"/>
+
+    <TextView
+        style="@style/TextAppearance.Title.Small"
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintBottom_toTopOf="@+id/description"
+        android:text="@string/price"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical"/>
 
     <TextView
         style="@style/TextAppearance.Body"
@@ -26,43 +40,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/price"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintEnd_toStartOf="@+id/action_container"
+        app:layout_constraintTop_toBottomOf="@+id/price"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="@tools:sample/lorem[12]"
-        android:minLines="2"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:layout_marginEnd="8dp"
-        android:gravity="center_vertical"/>
-
-    <TextView
-        style="@style/TextAppearance.Title"
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/title"
-        app:layout_constraintBottom_toBottomOf="@+id/description"
-        tools:text="1000 ₽"
+        android:minLines="1"
         android:maxLines="1"
         android:ellipsize="end"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/action_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/title"
+        app:layout_constraintBottom_toBottomOf="@+id/description">
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/action_group"

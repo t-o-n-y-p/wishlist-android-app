@@ -10,6 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import java.time.Duration
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -21,11 +23,8 @@ import ru.otus.wishlist.service.GiftsService
 import ru.otus.wishlist.service.SessionIdInterceptor
 import ru.otus.wishlist.service.UsersService
 import ru.otus.wishlist.service.WishlistsService
-import java.time.Duration
-import javax.inject.Singleton
 
-@HiltAndroidApp
-class WishlistApp : Application()
+@HiltAndroidApp class WishlistApp : Application()
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -55,13 +54,11 @@ class Module {
     fun authService(
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
-        sessionIdInterceptor: SessionIdInterceptor
+        sessionIdInterceptor: SessionIdInterceptor,
     ): AuthService =
         Retrofit.Builder()
             .client(
-                okHttpClient.newBuilder()
-                    .addInterceptor(sessionIdInterceptor)
-                    .build()
+                okHttpClient.newBuilder().addInterceptor(sessionIdInterceptor).build()
             )
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(converterFactory)
@@ -74,11 +71,12 @@ class Module {
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
         authInterceptor: AuthInterceptor,
-        sessionIdInterceptor: SessionIdInterceptor
+        sessionIdInterceptor: SessionIdInterceptor,
     ): UsersService =
         Retrofit.Builder()
             .client(
-                okHttpClient.newBuilder()
+                okHttpClient
+                    .newBuilder()
                     .addInterceptor(authInterceptor)
                     .addInterceptor(sessionIdInterceptor)
                     .build()
@@ -94,11 +92,12 @@ class Module {
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
         authInterceptor: AuthInterceptor,
-        sessionIdInterceptor: SessionIdInterceptor
+        sessionIdInterceptor: SessionIdInterceptor,
     ): WishlistsService =
         Retrofit.Builder()
             .client(
-                okHttpClient.newBuilder()
+                okHttpClient
+                    .newBuilder()
                     .addInterceptor(authInterceptor)
                     .addInterceptor(sessionIdInterceptor)
                     .build()
@@ -114,11 +113,12 @@ class Module {
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
         authInterceptor: AuthInterceptor,
-        sessionIdInterceptor: SessionIdInterceptor
+        sessionIdInterceptor: SessionIdInterceptor,
     ): GiftsService =
         Retrofit.Builder()
             .client(
-                okHttpClient.newBuilder()
+                okHttpClient
+                    .newBuilder()
                     .addInterceptor(authInterceptor)
                     .addInterceptor(sessionIdInterceptor)
                     .build()

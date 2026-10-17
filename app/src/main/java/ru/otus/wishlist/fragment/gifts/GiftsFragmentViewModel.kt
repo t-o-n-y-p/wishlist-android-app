@@ -7,22 +7,25 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlin.math.min
 import kotlinx.coroutines.launch
 import ru.otus.wishlist.WizardCache
 import ru.otus.wishlist.recyclerview.gifts.GiftsItem
 import ru.otus.wishlist.recyclerview.gifts.GiftsItemAdapter
-import javax.inject.Inject
-import kotlin.math.min
 
 @HiltViewModel
-class GiftsFragmentViewModel @Inject constructor(
+class GiftsFragmentViewModel
+@Inject
+constructor(
     private val useCase: GiftsFragmentUseCase,
-    private val cache: WizardCache
+    private val cache: WizardCache,
 ) : ViewModel() {
 
     private val mDataState = MutableLiveData<DataState>(DataState.NotSet)
     val dataState: LiveData<DataState>
         get() = mDataState
+
     private val mContentState = MutableLiveData<List<GiftsItem>>()
     val contentState: LiveData<List<GiftsItem>>
         get() = mContentState
@@ -49,16 +52,15 @@ class GiftsFragmentViewModel @Inject constructor(
                 (recyclerView.layoutManager as? LinearLayoutManager)?.apply {
                     val numberOfGifts = cache.currentWishlist?.gifts?.size ?: 0
                     findLastVisibleItemPosition()
-                        .takeIf {
-                            it == itemCount - 1 && itemCount < numberOfGifts
-                        }
+                        .takeIf { it == itemCount - 1 && itemCount < numberOfGifts }
                         ?.let {
                             adapter.submitList(
-                                cache.currentWishlist?.gifts?.slice(
-                                    0
-                                            until
-                                            min(numberOfGifts, itemCount + pageSize)
-                                ))
+                                cache.currentWishlist
+                                    ?.gifts
+                                    ?.slice(
+                                        0 until min(numberOfGifts, itemCount + pageSize)
+                                    )
+                            )
                         }
                 }
             }
@@ -71,33 +73,31 @@ class GiftsFragmentViewModel @Inject constructor(
 
     fun getCurrentGiftPosition() = cache.currentGiftPosition
 
-    fun deleteGiftItem(item: GiftsItem) =
-        viewModelScope.launch {
-            try {
-                item.operationInProgress()
-                useCase.deleteGift(item.id).getOrThrow()
-                item.operationSuccess()
-                cache.currentWishlist?.gifts?.apply {
-                    remove(item)
-                    mContentState.value = this
-                    ifEmpty { mDataState.value = DataState.Empty }
-                }
-            } catch (_: Throwable) {
-                item.operationError()
+    fun deleteGiftItem(item: GiftsItem) = viewModelScope.launch {
+        try {
+            item.operationInProgress()
+            useCase.deleteGift(item.id).getOrThrow()
+            item.operationSuccess()
+            cache.currentWishlist?.gifts?.apply {
+                remove(item)
+                mContentState.value = this
+                ifEmpty { mDataState.value = DataState.Empty }
             }
+        } catch (_: Throwable) {
+            item.operationError()
         }
+    }
 
-    fun reserveGiftItem(item: GiftsItem) =
-        viewModelScope.launch {
-            try {
-                item.operationInProgress()
-                val response = useCase.reserveGift(item.id).getOrThrow()
-                item.reserved = response.reserved ?: false
-                item.operationSuccess()
-            } catch (_: Throwable) {
-                item.operationError()
-            }
+    fun reserveGiftItem(item: GiftsItem) = viewModelScope.launch {
+        try {
+            item.operationInProgress()
+            val response = useCase.reserveGift(item.id).getOrThrow()
+            item.reserved = response.reserved ?: false
+            item.operationSuccess()
+        } catch (_: Throwable) {
+            item.operationError()
         }
+    }
 
     fun clearCurrentGift() {
         cache.currentGift = null
@@ -110,13 +110,13 @@ class GiftsFragmentViewModel @Inject constructor(
 
     sealed class DataState {
 
-        data object NotSet: DataState()
+        data object NotSet : DataState()
 
-        data object Loading: DataState()
+        data object Loading : DataState()
 
-        data object Empty: DataState()
+        data object Empty : DataState()
 
-        data object Content: DataState()
+        data object Content : DataState()
 
         data object Error : DataState()
     }

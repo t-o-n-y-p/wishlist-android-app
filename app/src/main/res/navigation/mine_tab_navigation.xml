@@ -18,10 +18,6 @@
         android:id="@+id/gifts_fragment"
         android:name="ru.otus.wishlist.fragment.gifts.GiftsFragment"
         android:label="fragment_gifts"
-        tools:layout="@layout/fragment_gifts">
-        <action
-            android:id="@+id/go_to_wishlists"
-            app:destination="@+id/wishlists_fragment"/>
-    </fragment>
+        tools:layout="@layout/fragment_gifts"/>
 
 </navigation>

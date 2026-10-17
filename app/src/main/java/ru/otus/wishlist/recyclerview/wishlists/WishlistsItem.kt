@@ -9,7 +9,8 @@ data class WishlistsItem(
     var title: String = "",
     var description: String = "",
     val gifts: MutableList<GiftsItem> = mutableListOf(),
-    private val mDeleteState: MutableLiveData<DeleteState> = MutableLiveData(DeleteState.NotSet)
+    private val mDeleteState: MutableLiveData<DeleteState> =
+        MutableLiveData(DeleteState.NotSet),
 ) {
     val deleteState: LiveData<DeleteState>
         get() = mDeleteState
@@ -32,11 +33,11 @@ data class WishlistsItem(
 
     sealed class DeleteState {
 
-        data object NotSet: DeleteState()
+        data object NotSet : DeleteState()
 
-        data object Loading: DeleteState()
+        data object Loading : DeleteState()
 
-        data object Success: DeleteState()
+        data object Success : DeleteState()
 
         data object Error : DeleteState()
     }

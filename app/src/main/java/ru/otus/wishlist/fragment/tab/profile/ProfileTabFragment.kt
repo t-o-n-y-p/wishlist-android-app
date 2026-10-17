@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.getValue
 import ru.otus.wishlist.R
 import ru.otus.wishlist.databinding.FragmentProfileTabBinding
-import kotlin.getValue
 
 @AndroidEntryPoint
 class ProfileTabFragment : Fragment(R.layout.fragment_profile_tab) {
@@ -20,7 +20,7 @@ class ProfileTabFragment : Fragment(R.layout.fragment_profile_tab) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentProfileTabBinding.inflate(inflater)
         return binding.root
@@ -28,9 +28,7 @@ class ProfileTabFragment : Fragment(R.layout.fragment_profile_tab) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.logOutButton.setOnClickListener {
-            viewModel.logout()
-        }
+        binding.logOutButton.setOnClickListener { viewModel.logout() }
         viewModel.fillDataFromPreferences(binding)
     }
 }

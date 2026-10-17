@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class UserPreferences(
     var token: String = "",
     var username: String = "",
-    var logoutEvent: LogoutEvent = LogoutEvent.LOGOUT
+    var logoutEvent: LogoutEvent = LogoutEvent.LOGOUT,
 ) {
 
     fun getAuthHeaderValue() = "Bearer $token"
@@ -17,6 +17,6 @@ data class UserPreferences(
 
     enum class LogoutEvent {
         LOGOUT,
-        FORCE_LOGOUT
+        FORCE_LOGOUT,
     }
 }

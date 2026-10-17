@@ -46,4 +46,6 @@
     <string name="filter_applied">Фильтр применен.</string>
     <string name="filter_cleared">Фильтр очищен.</string>
     <string name="session_id">Session ID:</string>
+    <string name="app_version">Версия приложения:</string>
+    <string name="price">Стоимость: %1$d ₽</string>
 </resources>

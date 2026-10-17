@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class RegisterFragmentViewModel @Inject constructor(
-    private val useCase: RegisterFragmentUseCase
-) : ViewModel() {
+class RegisterFragmentViewModel
+@Inject
+constructor(private val useCase: RegisterFragmentUseCase) : ViewModel() {
 
     private val mRegisterState = MutableLiveData<RegisterState>(RegisterState.NotSet)
     val registerState: LiveData<RegisterState>
@@ -21,11 +21,13 @@ class RegisterFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 mRegisterState.value = RegisterState.Loading
-                useCase.register(
-                    username = username,
-                    email = email,
-                    password = password
-                ).getOrThrow()
+                useCase
+                    .register(
+                        username = username,
+                        email = email,
+                        password = password,
+                    )
+                    .getOrThrow()
                 mRegisterState.value = RegisterState.Success
             } catch (_: Throwable) {
                 mRegisterState.value = RegisterState.Error
@@ -34,11 +36,11 @@ class RegisterFragmentViewModel @Inject constructor(
 
     sealed class RegisterState {
 
-        data object NotSet: RegisterState()
+        data object NotSet : RegisterState()
 
-        data object Loading: RegisterState()
+        data object Loading : RegisterState()
 
-        data object Success: RegisterState()
+        data object Success : RegisterState()
 
         data object Error : RegisterState()
     }

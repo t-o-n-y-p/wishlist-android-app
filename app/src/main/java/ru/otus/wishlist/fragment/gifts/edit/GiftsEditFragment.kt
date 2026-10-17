@@ -25,7 +25,7 @@ class GiftsEditFragment : BottomSheetDialogFragment(R.layout.fragment_gifts_edit
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentGiftsEditBinding.inflate(inflater)
         return binding.root
@@ -48,7 +48,7 @@ class GiftsEditFragment : BottomSheetDialogFragment(R.layout.fragment_gifts_edit
                     setFragmentResult(
                         fragment = viewModel.getFragmentResultRequestKey(),
                         key = RESULT,
-                        value = SUCCESS
+                        value = SUCCESS,
                     )
                 }
                 GiftsEditFragmentViewModel.OperationState.Error -> {
@@ -62,12 +62,12 @@ class GiftsEditFragment : BottomSheetDialogFragment(R.layout.fragment_gifts_edit
             viewModel.createOrUpdateGift(
                 name = binding.nameInput.text.toString(),
                 description = binding.descriptionInput.text.toString(),
-                price = binding.priceInput.text.toString().toInt()
+                price = binding.priceInput.text.toString().toInt(),
             )
         }
         viewModel.fillFieldsFromCache(
             binding,
-            editTitle = getString(R.string.gift_edit_title)
+            editTitle = getString(R.string.gift_edit_title),
         )
     }
 }

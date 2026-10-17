@@ -1,4 +1,3 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.hilt) apply false
@@ -7,10 +6,12 @@ plugins {
     alias(libs.plugins.openapi) apply false
     alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.secrets) apply false
+    alias(libs.plugins.ktfmt) apply false
 }
 
 buildscript {
     dependencies {
         classpath(libs.secrets.gradle.plugin)
+        classpath(libs.ktfmt)
     }
 }

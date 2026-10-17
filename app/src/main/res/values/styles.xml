@@ -74,6 +74,9 @@
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:textSize">22sp</item>
     </style>
+    <style name="TextAppearance.Title.Small" parent="TextAppearance.Title">
+        <item name="android:textSize">16sp</item>
+    </style>
     <style name="TextAppearance.Body" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:textColor">?attr/contentColor</item>
         <item name="fontFamily">@font/roboto_regular</item>

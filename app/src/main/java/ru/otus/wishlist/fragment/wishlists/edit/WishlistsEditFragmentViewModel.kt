@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import ru.otus.wishlist.DtoMapper
 import ru.otus.wishlist.R
@@ -13,17 +14,17 @@ import ru.otus.wishlist.api.models.Wishlist
 import ru.otus.wishlist.databinding.FragmentWishlistsEditBinding
 import ru.otus.wishlist.fragment.FRAGMENT_WISHLISTS_CREATE
 import ru.otus.wishlist.fragment.FRAGMENT_WISHLISTS_EDIT
-import javax.inject.Inject
 
 @HiltViewModel
-class WishlistsEditFragmentViewModel @Inject constructor(
+class WishlistsEditFragmentViewModel
+@Inject
+constructor(
     private val useCase: WishlistsEditFragmentUseCase,
     private val cache: WizardCache,
-    private val mapper: DtoMapper
+    private val mapper: DtoMapper,
 ) : ViewModel() {
 
-    private val mOperationState =
-        MutableLiveData<OperationState>(OperationState.NotSet)
+    private val mOperationState = MutableLiveData<OperationState>(OperationState.NotSet)
     val operationState: LiveData<OperationState>
         get() = mOperationState
 
@@ -39,43 +40,50 @@ class WishlistsEditFragmentViewModel @Inject constructor(
             try {
                 cache.currentWishlist?.apply {
                     mOperationState.value = OperationState.Loading
-                    useCase.updateWishlist(
-                        id = id,
-                        title = title,
-                        description = description
-                    ).getOrThrow()
+                    useCase
+                        .updateWishlist(
+                            id = id,
+                            title = title,
+                            description = description,
+                        )
+                        .getOrThrow()
                     this.title = title
                     this.description = description
                     mOperationState.value = OperationState.Success
-                } ?: let {
-                    mOperationState.value = OperationState.Loading
-                    val createResponse: Wishlist =
-                        useCase.createWishlist(
-                            title = title,
-                            description = description
-                        ).getOrThrow()
-                    val newWishlist = mapper.mapToWishlistsItem(createResponse)
-                    cache.wishlists.add(newWishlist)
-                    mOperationState.value = OperationState.Success
                 }
+                    ?: let {
+                        mOperationState.value = OperationState.Loading
+                        val createResponse: Wishlist =
+                            useCase
+                                .createWishlist(
+                                    title = title,
+                                    description = description,
+                                )
+                                .getOrThrow()
+                        val newWishlist = mapper.mapToWishlistsItem(createResponse)
+                        cache.wishlists.add(newWishlist)
+                        mOperationState.value = OperationState.Success
+                    }
             } catch (_: Throwable) {
                 mOperationState.value = OperationState.Error
             }
         }
 
     fun getToastText() =
-        cache.currentWishlist?.let { R.string.wishlists_updated } ?: R.string.wishlists_created
+        cache.currentWishlist?.let { R.string.wishlists_updated }
+            ?: R.string.wishlists_created
 
     fun getFragmentResultRequestKey() =
-        cache.currentWishlist?.let { FRAGMENT_WISHLISTS_EDIT } ?: FRAGMENT_WISHLISTS_CREATE
+        cache.currentWishlist?.let { FRAGMENT_WISHLISTS_EDIT }
+            ?: FRAGMENT_WISHLISTS_CREATE
 
     sealed class OperationState {
 
-        data object NotSet: OperationState()
+        data object NotSet : OperationState()
 
-        data object Loading: OperationState()
+        data object Loading : OperationState()
 
-        data object Success: OperationState()
+        data object Success : OperationState()
 
         data object Error : OperationState()
     }

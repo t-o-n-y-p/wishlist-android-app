@@ -24,7 +24,7 @@ class UsersFilterFragment : BottomSheetDialogFragment(R.layout.fragment_users_fi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentUsersFilterBinding.inflate(inflater)
         return binding.root
@@ -38,7 +38,7 @@ class UsersFilterFragment : BottomSheetDialogFragment(R.layout.fragment_users_fi
             setFragmentResult(
                 fragment = FRAGMENT_USERS_FILTER,
                 key = RESULT,
-                value = SUCCESS
+                value = SUCCESS,
             )
         }
         viewModel.fillFieldsFromCache(binding)

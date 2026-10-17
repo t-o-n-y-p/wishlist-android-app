@@ -1,10 +1,10 @@
 package ru.otus.wishlist
 
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import javax.inject.Inject
 import ru.otus.wishlist.recyclerview.gifts.GiftsItem
 import ru.otus.wishlist.recyclerview.users.UsersItem
 import ru.otus.wishlist.recyclerview.wishlists.WishlistsItem
-import javax.inject.Inject
 
 @ActivityRetainedScoped
 class WizardCache @Inject constructor() {

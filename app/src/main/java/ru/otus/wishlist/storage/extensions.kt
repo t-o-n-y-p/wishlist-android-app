@@ -15,7 +15,8 @@ inline fun <reified T> SharedPreferences.put(value: T) =
     edit(commit = true) {
         putString(
             T::class.simpleName,
-            Json.encodeToString(EmptySerializersModule().serializer(), value))
+            Json.encodeToString(EmptySerializersModule().serializer(), value),
+        )
     }
 
 fun SharedPreferences.logout() =

@@ -6,6 +6,5 @@ import ru.otus.wishlist.api.models.User
 
 interface UsersService {
 
-    @GET("users")
-    suspend fun getAllUsers(): Response<List<User>>
+    @GET("users") suspend fun getAllUsers(): Response<List<User>>
 }

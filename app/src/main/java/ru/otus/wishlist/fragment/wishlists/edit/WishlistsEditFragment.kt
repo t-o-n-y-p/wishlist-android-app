@@ -17,7 +17,8 @@ import ru.otus.wishlist.fragment.setFragmentResult
 import ru.otus.wishlist.fragment.showErrorAlert
 
 @AndroidEntryPoint
-class WishlistsEditFragment : BottomSheetDialogFragment(R.layout.fragment_wishlists_edit) {
+class WishlistsEditFragment :
+    BottomSheetDialogFragment(R.layout.fragment_wishlists_edit) {
 
     private lateinit var binding: FragmentWishlistsEditBinding
     private val viewModel: WishlistsEditFragmentViewModel by viewModels()
@@ -25,7 +26,7 @@ class WishlistsEditFragment : BottomSheetDialogFragment(R.layout.fragment_wishli
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentWishlistsEditBinding.inflate(inflater)
         return binding.root
@@ -48,7 +49,7 @@ class WishlistsEditFragment : BottomSheetDialogFragment(R.layout.fragment_wishli
                     setFragmentResult(
                         fragment = viewModel.getFragmentResultRequestKey(),
                         key = RESULT,
-                        value = SUCCESS
+                        value = SUCCESS,
                     )
                 }
                 WishlistsEditFragmentViewModel.OperationState.Error -> {
@@ -61,12 +62,12 @@ class WishlistsEditFragment : BottomSheetDialogFragment(R.layout.fragment_wishli
         binding.saveButton.setOnClickListener {
             viewModel.createOrUpdateWishlist(
                 title = binding.titleInput.text.toString(),
-                description = binding.descriptionInput.text.toString()
+                description = binding.descriptionInput.text.toString(),
             )
         }
         viewModel.fillFieldsFromCache(
             binding,
-            editTitle = getString(R.string.wishlist_edit_title)
+            editTitle = getString(R.string.wishlist_edit_title),
         )
     }
 }

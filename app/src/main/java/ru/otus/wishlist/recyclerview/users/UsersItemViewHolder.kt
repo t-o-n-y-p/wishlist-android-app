@@ -7,7 +7,7 @@ import ru.otus.wishlist.R
 
 class UsersItemViewHolder(
     view: View,
-    private val onItemClicked: (UsersItem) -> Unit = { _ -> }
+    private val onItemClicked: (UsersItem) -> Unit = { _ -> },
 ) : RecyclerView.ViewHolder(view) {
 
     private val usernameTextView: TextView by lazy {
@@ -16,8 +16,6 @@ class UsersItemViewHolder(
 
     fun bind(item: UsersItem) {
         usernameTextView.text = item.username
-        itemView.setOnClickListener {
-            onItemClicked(item)
-        }
+        itemView.setOnClickListener { onItemClicked(item) }
     }
 }

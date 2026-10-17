@@ -12,15 +12,15 @@ import ru.otus.wishlist.api.models.WishlistDto
 
 interface WishlistsService {
 
-    @GET("wishlists")
-    suspend fun getAllWishlists(): Response<List<Wishlist>>
+    @GET("wishlists") suspend fun getAllWishlists(): Response<List<Wishlist>>
 
     @POST("wishlists")
     suspend fun createWishlist(@Body requestBody: WishlistDto): Response<Wishlist>
 
     @PUT("wishlists/{id}")
     suspend fun updateWishlist(
-        @Path("id") id: String, @Body requestBody: WishlistDto
+        @Path("id") id: String,
+        @Body requestBody: WishlistDto,
     ): Response<Wishlist>
 
     @DELETE("wishlists/{id}")

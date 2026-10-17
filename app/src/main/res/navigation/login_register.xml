@@ -14,16 +14,15 @@
             app:destination="@+id/register_fragment"/>
         <action
             android:id="@+id/go_to_app_main"
-            app:destination="@+id/app_main_fragment"/>
+            app:destination="@+id/app_main_fragment"
+            app:popUpTo="@+id/login_fragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
         android:id="@+id/register_fragment"
         android:name="ru.otus.wishlist.fragment.register.RegisterFragment"
         tools:layout="@layout/fragment_register">
-        <action
-            android:id="@+id/go_to_login"
-            app:destination="@+id/login_fragment"/>
     </fragment>
 
     <fragment
@@ -33,8 +32,9 @@
         tools:layout="@layout/fragment_app_main">
         <action
             android:id="@+id/logout"
-            app:destination="@+id/login_fragment"/>
+            app:destination="@+id/login_fragment"
+            app:popUpTo="@+id/app_main_fragment"
+            app:popUpToInclusive="true"/>
     </fragment>
-
 
 </navigation>

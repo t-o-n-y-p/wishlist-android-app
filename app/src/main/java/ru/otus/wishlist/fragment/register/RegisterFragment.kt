@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,8 +21,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private val viewModel: RegisterFragmentViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentRegisterBinding.inflate(inflater)
         return binding.root
@@ -42,7 +42,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     binding.waitButton.isVisible = true
                 }
                 RegisterFragmentViewModel.RegisterState.Success -> {
-                    findNavController().navigate(R.id.go_to_login)
+                    findNavController().popBackStack()
                     MaterialAlertDialogBuilder(requireActivity(), R.style.Alert)
                         .setTitle(getString(R.string.successful_registration))
                         .setMessage(getString(R.string.now_you_can_log_in))
@@ -56,18 +56,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 }
             }
         }
-        binding.logInButton.setOnClickListener {
-            findNavController().navigate(R.id.go_to_login)
-        }
+        binding.logInButton.setOnClickListener { findNavController().popBackStack() }
         binding.registerButton.setOnClickListener {
             viewModel.register(
                 username = binding.usernameTextInput.text.toString(),
                 email = binding.emailTextInput.text.toString(),
-                password = binding.passwordTextInput.text.toString()
+                password = binding.passwordTextInput.text.toString(),
             )
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            findNavController().navigate(R.id.go_to_login)
         }
     }
 }
