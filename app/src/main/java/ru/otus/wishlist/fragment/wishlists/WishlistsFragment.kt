@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.min
 import ru.otus.wishlist.R
 import ru.otus.wishlist.databinding.FragmentWishlistsBinding
+import ru.otus.wishlist.fragment.DataState
 import ru.otus.wishlist.fragment.FRAGMENT_WISHLISTS_CREATE
 import ru.otus.wishlist.fragment.FRAGMENT_WISHLISTS_EDIT
 import ru.otus.wishlist.fragment.RECYCLER_VIEW_PAGE_SIZE
@@ -112,31 +113,31 @@ class WishlistsFragment : Fragment(R.layout.fragment_wishlists) {
         }
         viewModel.dataState.observe(viewLifecycleOwner) {
             when (it) {
-                WishlistsFragmentViewModel.DataState.NotSet -> {
+                DataState.NotSet -> {
                     binding.wishlistsLoading.loadingGroup.isVisible = false
                     binding.wishlistsContent.contentGroup.isVisible = false
                     binding.wishlistsError.errorGroup.isVisible = false
                     binding.wishlistsNoResults.noResultsGroup.isVisible = false
                 }
-                WishlistsFragmentViewModel.DataState.Loading -> {
+                DataState.Loading -> {
                     binding.wishlistsLoading.loadingGroup.isVisible = true
                     binding.wishlistsContent.contentGroup.isVisible = false
                     binding.wishlistsError.errorGroup.isVisible = false
                     binding.wishlistsNoResults.noResultsGroup.isVisible = false
                 }
-                WishlistsFragmentViewModel.DataState.Content -> {
+                DataState.Content -> {
                     binding.wishlistsLoading.loadingGroup.isVisible = false
                     binding.wishlistsContent.contentGroup.isVisible = true
                     binding.wishlistsError.errorGroup.isVisible = false
                     binding.wishlistsNoResults.noResultsGroup.isVisible = false
                 }
-                WishlistsFragmentViewModel.DataState.Error -> {
+                DataState.Error -> {
                     binding.wishlistsLoading.loadingGroup.isVisible = false
                     binding.wishlistsContent.contentGroup.isVisible = false
                     binding.wishlistsError.errorGroup.isVisible = true
                     binding.wishlistsNoResults.noResultsGroup.isVisible = false
                 }
-                WishlistsFragmentViewModel.DataState.Empty -> {
+                DataState.Empty -> {
                     binding.wishlistsLoading.loadingGroup.isVisible = false
                     binding.wishlistsContent.contentGroup.isVisible = false
                     binding.wishlistsError.errorGroup.isVisible = false

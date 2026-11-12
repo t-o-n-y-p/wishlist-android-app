@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.min
 import ru.otus.wishlist.R
 import ru.otus.wishlist.databinding.FragmentGiftsBinding
+import ru.otus.wishlist.fragment.DataState
 import ru.otus.wishlist.fragment.FRAGMENT_GIFTS_CREATE
 import ru.otus.wishlist.fragment.FRAGMENT_GIFTS_EDIT
 import ru.otus.wishlist.fragment.RECYCLER_VIEW_PAGE_SIZE
@@ -125,31 +126,31 @@ class GiftsFragment : Fragment(R.layout.fragment_gifts) {
         }
         viewModel.dataState.observe(viewLifecycleOwner) {
             when (it) {
-                GiftsFragmentViewModel.DataState.NotSet -> {
+                DataState.NotSet -> {
                     binding.giftsLoading.loadingGroup.isVisible = false
                     binding.giftsContent.contentGroup.isVisible = false
                     binding.giftsError.errorGroup.isVisible = false
                     binding.giftsNoResults.noResultsGroup.isVisible = false
                 }
-                GiftsFragmentViewModel.DataState.Loading -> {
+                DataState.Loading -> {
                     binding.giftsLoading.loadingGroup.isVisible = true
                     binding.giftsContent.contentGroup.isVisible = false
                     binding.giftsError.errorGroup.isVisible = false
                     binding.giftsNoResults.noResultsGroup.isVisible = false
                 }
-                GiftsFragmentViewModel.DataState.Content -> {
+                DataState.Content -> {
                     binding.giftsLoading.loadingGroup.isVisible = false
                     binding.giftsContent.contentGroup.isVisible = true
                     binding.giftsError.errorGroup.isVisible = false
                     binding.giftsNoResults.noResultsGroup.isVisible = false
                 }
-                GiftsFragmentViewModel.DataState.Error -> {
+                DataState.Error -> {
                     binding.giftsLoading.loadingGroup.isVisible = false
                     binding.giftsContent.contentGroup.isVisible = false
                     binding.giftsError.errorGroup.isVisible = true
                     binding.giftsNoResults.noResultsGroup.isVisible = false
                 }
-                GiftsFragmentViewModel.DataState.Empty -> {
+                DataState.Empty -> {
                     binding.giftsLoading.loadingGroup.isVisible = false
                     binding.giftsContent.contentGroup.isVisible = false
                     binding.giftsError.errorGroup.isVisible = false

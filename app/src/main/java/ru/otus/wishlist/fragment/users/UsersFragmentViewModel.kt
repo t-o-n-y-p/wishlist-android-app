@@ -12,10 +12,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlin.math.min
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import ru.otus.wishlist.DtoMapper
 import ru.otus.wishlist.WizardCache
 import ru.otus.wishlist.databinding.FragmentUsersBinding
+import ru.otus.wishlist.fragment.DataState
+import ru.otus.wishlist.fragment.fetchList
+import ru.otus.wishlist.fragment.mapToState
 import ru.otus.wishlist.recyclerview.users.UsersItem
 import ru.otus.wishlist.recyclerview.users.UsersItemAdapter
 import ru.otus.wishlist.storage.UserPreferences
@@ -53,34 +55,22 @@ constructor(
                             ?.let { it == user.username } ?: true
                     }
                 mContentState.value = cache.filteredUsers
-                mDataState.value =
-                    if (cache.filteredUsers.isEmpty()) DataState.Empty
-                    else DataState.Content
+                mDataState.mapToState(cache.filteredUsers)
             }
     }
 
     fun loadUsersAndSaveToCache() {
         refreshDataTask.cancel()
-        refreshDataTask = viewModelScope.launch {
-            try {
-                mDataState.value = DataState.Loading
+        refreshDataTask =
+            mDataState.fetchList(viewModelScope, mContentState) {
                 val data = useCase.getAllUsers().getOrThrow()
-                data
-                    .takeIf { it.isNotEmpty() }
-                    ?.let {
-                        cache.users =
-                            mapper.mapToUsersItem(it) { user ->
-                                user.username !=
-                                    sharedPreferences.get<UserPreferences>().username
-                            }
-                        cache.filteredUsers = cache.users
-                        mContentState.value = cache.filteredUsers
-                        mDataState.value = DataState.Content
-                    } ?: let { mDataState.value = DataState.Empty }
-            } catch (_: Throwable) {
-                mDataState.value = DataState.Error
+                cache.users =
+                    mapper.mapToUsersItem(data) { user ->
+                        user.username != sharedPreferences.get<UserPreferences>().username
+                    }
+                cache.filteredUsers = cache.users
+                cache.filteredUsers
             }
-        }
     }
 
     fun getOnScrollListener(adapter: UsersItemAdapter, pageSize: Int) =
@@ -116,18 +106,5 @@ constructor(
 
     fun clearUsersFilter() {
         cache.usernameFilter = ""
-    }
-
-    sealed class DataState {
-
-        data object NotSet : DataState()
-
-        data object Loading : DataState()
-
-        data object Empty : DataState()
-
-        data object Content : DataState()
-
-        data object Error : DataState()
     }
 }
