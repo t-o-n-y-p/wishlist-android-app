@@ -6,6 +6,10 @@ and follow the architecture rules defined there and in the numbered files under
 `.cline/rules/architecture/`. The rules are binding: when a change conflicts with a
 rule, update the rule together with the code. Do not duplicate those rules here.
 
+## Definition of done
+All tasks must comply with `.cline/rules/DEFINITION_OF_DONE.md`: a task is not
+complete until every gate defined there passes. Do not duplicate the gates here.
+
 ## Project architecture overview
 
 ### Purpose
