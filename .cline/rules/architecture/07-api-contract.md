@@ -7,6 +7,7 @@ change `wishlist.yaml` and regenerate.
 
 ## Endpoints
 Keep the endpoint surface (the "used by app" column reflects current usage):
+
 | Method | Path | operationId | Used by app? |
 |---|---|---|---|
 | GET | `/api/wishlists/{id}` | getWishlist | no |
