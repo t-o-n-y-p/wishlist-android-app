@@ -10,6 +10,19 @@ rule, update the rule together with the code. Do not duplicate those rules here.
 All tasks must comply with `.cline/rules/DEFINITION_OF_DONE.md`: a task is not
 complete until every gate defined there passes. Do not duplicate the gates here.
 
+## Task response requirements (per task category)
+Every task belongs to exactly one category, and the task's response must comply
+with the corresponding rule file in `.cline/rules/` based on the task category:
+
+| Task category | Rule file |
+|---|---|
+| New functionality (adding a new capability) | `.cline/rules/NEW_FEATURE.md` |
+| Bugfix (correcting incorrect behavior) | `.cline/rules/BUGFIX.md` |
+| Refactoring (restructuring code without changing behavior) | `.cline/rules/REFACTORING.md` |
+
+All the tasks must comply with the corresponding requirements from the matching
+file. Do not duplicate those requirements here.
+
 ## Project architecture overview
 
 ### Purpose
