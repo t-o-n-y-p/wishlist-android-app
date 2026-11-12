@@ -1,10 +1,12 @@
 # 07 — API contract (OpenAPI)
 
-Source: `wishlist-api/src/main/resources/wishlist.yaml` (OpenAPI 3.0.1, "Wishlist API",
-v1.0). All paths are under `/api/...` — confirms `BASE_URL` must end with `/api/`.
-Model classes are code-generated at build time (no generated sources committed).
+Reference: `wishlist-api/src/main/resources/wishlist.yaml` (OpenAPI 3.0.1, "Wishlist
+API", v1.0). All paths are under `/api/...` — keep `BASE_URL` ending with `/api/`.
+Model classes are code-generated at build time: do not commit generated sources —
+change `wishlist.yaml` and regenerate.
 
 ## Endpoints
+Keep the endpoint surface (the "used by app" column reflects current usage):
 | Method | Path | operationId | Used by app? |
 |---|---|---|---|
 | GET | `/api/wishlists/{id}` | getWishlist | no |
@@ -24,14 +26,15 @@ Model classes are code-generated at build time (no generated sources committed).
 | GET | `/api/users` | getAllUsersOpen | yes |
 | GET | `/api/users/{userId}/wishlists` | getUserWishlistsOpen | no (app uses the other path) |
 
-\* unused because **gifts arrive embedded in Wishlist DTOs**.
+\* Unused because **gifts arrive embedded in Wishlist DTOs** — do not add a separate
+gift-list fetch.
 
 ## Schemas
 - `User` — `id` (uuid), `username`, `email`.
 - `Wishlist` — `id`, `title`, `description`, `owner: User`, **`gifts: Gift[]`**.
 - `Gift` — `id`, `name`, `description`, `imageUrl`, `storeUrl`, `price: number`,
-  `reserved: boolean`, `wishList: Wishlist` (back-reference, unused by app; the app
-  also ignores `imageUrl`/`storeUrl` — no images in the UI).
+  `reserved: boolean`, `wishList: Wishlist` (back-reference, unused by the app; the
+  app also ignores `imageUrl`/`storeUrl` — no images in the UI).
 - `WishlistDto` — `title` (required), `description`.
 - `GiftDto` — `id`, `name` (required, ≤255), `description` (≤1000), `imageUrl`,
   `price: number` (required), `storeUrl` (URL pattern), `reserved`.
@@ -39,9 +42,10 @@ Model classes are code-generated at build time (no generated sources committed).
 - `LoginDto` — `username`, `password` (both required).
 - `Login` — `token`.
 
-## Consequences visible in the app code
-- Gifts are child data of wishlists: the app never lists/fetches gifts separately;
-  reserve/delete/update are the only per-gift calls.
-- `price` is `number` in the DTO (`GiftDto.price: Double`), `Double?` in `Gift`;
-  `DtoMapper` narrows it to `Int` for the UI (`price?.toInt() ?: 0`).
-- All ids are UUIDs (strings); app treats them as plain Strings.
+## Consequences to respect in app code
+- Keep treating gifts as child data of wishlists: the app never lists/fetches gifts
+  separately; reserve/delete/update are the only per-gift calls.
+- Keep the price handling: `price` is `number` in the DTO (`GiftDto.price: Double`),
+  `Double?` in `Gift`; `DtoMapper` narrows it to `Int` for the UI
+  (`price?.toInt() ?: 0`).
+- Keep treating all ids as UUIDs (strings) — plain Strings.
