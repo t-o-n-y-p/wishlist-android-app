@@ -2,7 +2,7 @@
 
 Reference files: `NetworkCallProcessor.kt`, `DtoMapper.kt`, `WizardCache.kt`,
 `service/{AuthInterceptor,SessionIdInterceptor,UsersService,WishlistsService,GiftsService}.kt`,
-`fragment/{extensions,constants}.kt`
+`fragment/{extensions,constants,DataState}.kt`
 
 ## `NetworkCallProcessor` (@ActivityRetainedScoped)
 - Route every Retrofit call through `suspend fun <T> call(block: suspend () ->
@@ -66,6 +66,18 @@ typo fix.)
 - Keep the FragmentResult request keys: `FRAGMENT_WISHLISTS_EDIT`,
   `FRAGMENT_WISHLISTS_CREATE`, `FRAGMENT_GIFTS_EDIT`, `FRAGMENT_GIFTS_CREATE`,
   `FRAGMENT_USERS_FILTER`; result keys `RESULT`, `SUCCESS`.
+
+## `fragment/DataState.kt` — shared list screen state
+- Keep a single shared `sealed class DataState` (NotSet/Loading/Empty/Content/Error)
+  for all list features (users / wishlists / gifts) — do not redefine it per
+  ViewModel.
+- Keep `MutableLiveData<DataState>.mapToState(items)` — maps a loaded list to
+  `DataState.Empty` (empty) / `DataState.Content` (non-empty) and emits the state.
+- Keep `MutableLiveData<DataState>.fetchList(scope, contentState, block)` — the single
+  async list-load gate for list ViewModels: emits `DataState.Loading`, runs `block`
+  (fetch + mapping + cache), emits `block`'s result list into `contentState`, then
+  `DataState.Content`/`DataState.Empty`; any `Throwable` from `block` collapses to
+  `DataState.Error`. Returns the launched `Job` (callers cancel/restart it on reload).
 
 ## DI scopes — follow when adding new classes
 - Singleton: OkHttpClient, converters, all 4 Retrofit services, both interceptors,

@@ -26,13 +26,16 @@ Reference files: `fragment/main/*`, `fragment/tab/*`, `fragment/users/*`,
 
 ## Users tab → `UsersFragment`
 - Keep the layout `fragment_users` = 4 mutually exclusive groups switched by
-  `DataState`: `usersLoading.loadingGroup` / `usersContent.contentGroup` /
-  `usersError.errorGroup` / `usersNoResults.noResultsGroup` (NotSet/Loading/Content/
-  Error/**Empty** — the list features add Empty to the auth 4-state pattern).
+  the shared 5-state `DataState` (`fragment/DataState.kt`):
+  `usersLoading.loadingGroup` / `usersContent.contentGroup` /
+  `usersError.errorGroup` / `usersNoResults.noResultsGroup` (the list features
+  add Empty to the auth 4-state pattern).
 - Keep the data flow: `fillUsersFromCache` → if `cache.users` is empty,
   `loadUsersAndSaveToCache()`: `useCase.getAllUsers()` →
   `DtoMapper.mapToUsersItem(list) { user.username != myUsername }` — **the current
-  user is excluded from the users list**. Cache the result once; cancel/restart the
+  user is excluded from the users list**. The load runs through the shared
+  `fetchList` helper (`fragment/DataState.kt`): Loading → fetch/map/cache →
+  Content/Empty, any `Throwable` → Error. Cache the result once; cancel/restart the
   `refreshDataTask` Job on reload.
 - Keep the client-side "pagination": initial `submitList(first min(size,
   RECYCLER_VIEW_PAGE_SIZE)=10)`; an `OnScrollListener` (provided by the ViewModel)
@@ -58,8 +61,9 @@ Reference files: `fragment/main/*`, `fragment/tab/*`, `fragment/users/*`,
   `addButton` visible); non-null → user's wishlists (title `wishlists_of_user` +
   username, add button hidden). Keep the same fragment instance in both tab graphs.
 - Keep the data: `fillWishlistsFromCache` → if `cache.wishlists` is empty, fetch
-  `getUserWishlists(currentUser.id)` if in user mode else `getAllWishlists()`, map
-  via `DtoMapper`, cache, emit. Reuse the cached list until the cache is cleared (tab
+  `getUserWishlists(currentUser.id)` if in user mode else `getAllWishlists()`
+  (through the shared `fetchList` helper, `fragment/DataState.kt`), map via
+  `DtoMapper`, cache, emit. Reuse the cached list until the cache is cleared (tab
   switch / new user selected / logout).
 - Keep item actions: click → `saveCurrentWishlist(item, position)` →
   `navigate(go_to_gifts)`; edit → bottom sheet `WishlistsEditFragment`; delete →
@@ -71,8 +75,8 @@ Reference files: `fragment/main/*`, `fragment/tab/*`, `fragment/users/*`,
   `notifyItemChanged(position)`; `FRAGMENT_WISHLISTS_CREATE` →
   `fillWishlistsFromCache()` (the new item is already added to the cache by the
   sheet's ViewModel).
-- Keep the same 5-state DataState + scroll-chunked `submitList(first 10)` as
-  UsersFragment.
+- Keep the same shared 5-state `DataState` (`fragment/DataState.kt`) +
+  scroll-chunked `submitList(first 10)` as UsersFragment.
 
 ## `WishlistsEditFragment` (bottom sheet — create **and** edit)
 - Keep the mode by `cache.currentWishlist` (null = create): edit pre-fills

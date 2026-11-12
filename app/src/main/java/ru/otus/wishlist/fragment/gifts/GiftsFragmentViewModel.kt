@@ -11,6 +11,8 @@ import javax.inject.Inject
 import kotlin.math.min
 import kotlinx.coroutines.launch
 import ru.otus.wishlist.WizardCache
+import ru.otus.wishlist.fragment.DataState
+import ru.otus.wishlist.fragment.mapToState
 import ru.otus.wishlist.recyclerview.gifts.GiftsItem
 import ru.otus.wishlist.recyclerview.gifts.GiftsItemAdapter
 
@@ -31,18 +33,10 @@ constructor(
         get() = mContentState
 
     fun fillGiftsFromCache() {
-        cache.currentWishlist
-            ?.gifts
-            ?.takeIf { it.isNotEmpty() }
-            ?.let {
-                mDataState.value = DataState.Loading
-                mContentState.value = it
-                mDataState.value = DataState.Content
-            }
-            ?: let {
-                mDataState.value = DataState.Loading
-                mDataState.value = DataState.Empty
-            }
+        val gifts = cache.currentWishlist?.gifts ?: emptyList()
+        mDataState.value = DataState.Loading
+        gifts.takeIf { it.isNotEmpty() }?.let { mContentState.value = it }
+        mDataState.mapToState(gifts)
     }
 
     fun getOnScrollListener(adapter: GiftsItemAdapter, pageSize: Int) =
@@ -81,7 +75,7 @@ constructor(
             cache.currentWishlist?.gifts?.apply {
                 remove(item)
                 mContentState.value = this
-                ifEmpty { mDataState.value = DataState.Empty }
+                mDataState.mapToState(this)
             }
         } catch (_: Throwable) {
             item.operationError()
@@ -107,17 +101,4 @@ constructor(
     fun getCurrentWishlist() = cache.currentWishlist
 
     fun getCurrentUser() = cache.currentUser
-
-    sealed class DataState {
-
-        data object NotSet : DataState()
-
-        data object Loading : DataState()
-
-        data object Empty : DataState()
-
-        data object Content : DataState()
-
-        data object Error : DataState()
-    }
 }

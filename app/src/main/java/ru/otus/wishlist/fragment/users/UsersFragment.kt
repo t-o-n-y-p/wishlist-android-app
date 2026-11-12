@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.min
 import ru.otus.wishlist.R
 import ru.otus.wishlist.databinding.FragmentUsersBinding
+import ru.otus.wishlist.fragment.DataState
 import ru.otus.wishlist.fragment.FRAGMENT_USERS_FILTER
 import ru.otus.wishlist.fragment.RECYCLER_VIEW_PAGE_SIZE
 import ru.otus.wishlist.fragment.RESULT
@@ -62,31 +63,31 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
         }
         viewModel.dataState.observe(viewLifecycleOwner) {
             when (it) {
-                UsersFragmentViewModel.DataState.NotSet -> {
+                DataState.NotSet -> {
                     binding.usersLoading.loadingGroup.isVisible = false
                     binding.usersContent.contentGroup.isVisible = false
                     binding.usersError.errorGroup.isVisible = false
                     binding.usersNoResults.noResultsGroup.isVisible = false
                 }
-                UsersFragmentViewModel.DataState.Loading -> {
+                DataState.Loading -> {
                     binding.usersLoading.loadingGroup.isVisible = true
                     binding.usersContent.contentGroup.isVisible = false
                     binding.usersError.errorGroup.isVisible = false
                     binding.usersNoResults.noResultsGroup.isVisible = false
                 }
-                UsersFragmentViewModel.DataState.Content -> {
+                DataState.Content -> {
                     binding.usersLoading.loadingGroup.isVisible = false
                     binding.usersContent.contentGroup.isVisible = true
                     binding.usersError.errorGroup.isVisible = false
                     binding.usersNoResults.noResultsGroup.isVisible = false
                 }
-                UsersFragmentViewModel.DataState.Error -> {
+                DataState.Error -> {
                     binding.usersLoading.loadingGroup.isVisible = false
                     binding.usersContent.contentGroup.isVisible = false
                     binding.usersError.errorGroup.isVisible = true
                     binding.usersNoResults.noResultsGroup.isVisible = false
                 }
-                UsersFragmentViewModel.DataState.Empty -> {
+                DataState.Empty -> {
                     binding.usersLoading.loadingGroup.isVisible = false
                     binding.usersContent.contentGroup.isVisible = false
                     binding.usersError.errorGroup.isVisible = false

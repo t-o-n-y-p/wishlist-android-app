@@ -30,8 +30,12 @@ rule, update the rule in this folder together with the code.
   users → wishlists → gifts "wizard" flow must read/write it instead of passing data
   through nav arguments.
 - Follow the UI state pattern: screen-level 5-state `DataState`
-  (NotSet/Loading/Content/Empty/Error) plus per-row state LiveData embedded in the
-  mutable row data classes (`WishlistsItem`, `GiftsItem`) observed inside `onBind`.
+  (NotSet/Loading/Content/Empty/Error) — the single shared sealed class in
+  `fragment/DataState.kt` — plus per-row state LiveData embedded in the mutable row
+  data classes (`WishlistsItem`, `GiftsItem`) observed inside `onBind`. List
+  ViewModels drive the shared `DataState` through its helpers (`mapToState` for the
+  Empty/Content mapping, `fetchList` for Loading → load → Content/Empty with
+  `Throwable` → Error); do not redefine `DataState` per ViewModel.
 - Implement edit/create dialogs as `BottomSheetDialogFragment`s that communicate back
   via the FragmentResult API (keys in `fragment/constants.kt`) and mutate the cache.
 - Keep the "own" vs "someone else's" mode decision in `cache.currentUser == null`: it

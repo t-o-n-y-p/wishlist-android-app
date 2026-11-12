@@ -13,6 +13,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.otus.wishlist.DtoMapper
 import ru.otus.wishlist.WizardCache
+import ru.otus.wishlist.fragment.DataState
+import ru.otus.wishlist.fragment.fetchList
+import ru.otus.wishlist.fragment.mapToState
 import ru.otus.wishlist.recyclerview.wishlists.WishlistsItem
 import ru.otus.wishlist.recyclerview.wishlists.WishlistsItemAdapter
 
@@ -40,30 +43,20 @@ constructor(
             ?: let {
                 mDataState.value = DataState.Loading
                 mContentState.value = cache.wishlists
-                mDataState.value = DataState.Content
+                mDataState.mapToState(cache.wishlists)
             }
     }
 
     fun loadWishlistsAndSaveToCache() {
         refreshDataTask.cancel()
-        refreshDataTask = viewModelScope.launch {
-            try {
-                mDataState.value = DataState.Loading
+        refreshDataTask =
+            mDataState.fetchList(viewModelScope, mContentState) {
                 val result =
                     cache.currentUser?.id?.let { useCase.getUserWishlists(it) }
                         ?: useCase.getAllWishlists()
-                val data = result.getOrThrow()
-                data
-                    .takeIf { it.isNotEmpty() }
-                    ?.let {
-                        cache.wishlists = mapper.mapToWishlistsItem(it)
-                        mContentState.value = cache.wishlists
-                        mDataState.value = DataState.Content
-                    } ?: let { mDataState.value = DataState.Empty }
-            } catch (_: Throwable) {
-                mDataState.value = DataState.Error
+                cache.wishlists = mapper.mapToWishlistsItem(result.getOrThrow())
+                cache.wishlists
             }
-        }
     }
 
     fun getOnScrollListener(adapter: WishlistsItemAdapter, pageSize: Int) =
@@ -102,7 +95,7 @@ constructor(
             cache.wishlists.apply {
                 remove(item)
                 mContentState.value = this
-                ifEmpty { mDataState.value = DataState.Empty }
+                mDataState.mapToState(this)
             }
         } catch (_: Throwable) {
             item.deleteError()
@@ -115,17 +108,4 @@ constructor(
     }
 
     fun getCurrentUser() = cache.currentUser
-
-    sealed class DataState {
-
-        data object NotSet : DataState()
-
-        data object Loading : DataState()
-
-        data object Empty : DataState()
-
-        data object Content : DataState()
-
-        data object Error : DataState()
-    }
 }
